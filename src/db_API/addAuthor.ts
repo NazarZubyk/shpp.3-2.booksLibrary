@@ -10,7 +10,7 @@ export async function addsAuthor(
   try {
     // Read the content of the SQL file
     let sqlScript = fs.readFileSync(scriptPath, 'utf-8');
-    sqlScript = sqlScript.replace('textFiel1', author)
+    sqlScript = sqlScript.replace('textField1', author)
             
     await (await connection).query(sqlScript);
 

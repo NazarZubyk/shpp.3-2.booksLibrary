@@ -2,6 +2,7 @@ import express from 'express'
 import http from 'http'
 import path from 'path';
 import ejs from 'ejs';
+import { addBook } from './db_API/addNewBook';
 
 //--------------------------------------------------------
 const fs = require('fs').promises;
@@ -21,6 +22,9 @@ async function runMigrations() {
       // Run the migration scripts in order
       await runMigrationScript('001_create_table.sql', connection);
       await runMigrationScript('002_add_test_data.sql' , connection);
+      await runMigrationScript('003_create_books_table.sql' , connection);
+      await runMigrationScript('004_create_authors_table.sql' , connection);
+      await runMigrationScript('005_create_relationship_books_authors_table.sql' , connection);
   
       console.log('All migration scripts executed successfully');
     } catch (error) {
@@ -45,8 +49,18 @@ async function runMigrations() {
     }
   }
   
-  // Call the function to run migrations
   runMigrations();
+
+  let yourDate = new Date().toISOString().split('T')[0]
+
+  addBook("MyBookName",
+  yourDate,
+  'someDescription',
+  'someURL',
+  ['someAuthor']  )
+
+  // Call the function to run migrations
+  
 
 // Create a connection to the MySQL database
 // const connection = mysql.createConnection({

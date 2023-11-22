@@ -5,17 +5,19 @@ import path from 'path';
 const scriptPath =  path.join( 'sqlscripts/operation', 'binding.sql');
 
 
-export async function addsAuthor(
+export async function binding(
     author: string,
     book: string
         ): Promise<void> {
   try {
     // Read the content of the SQL file
     let sqlScript = fs.readFileSync(scriptPath, 'utf-8');
-
-    sqlScript = sqlScript.replace('textFiel1', author)
-    sqlScript = sqlScript.replace('textFiel2', book)
     
+    sqlScript =  sqlScript.replace('textField1', author)
+     sqlScript = sqlScript.replace('textField2', book)
+    console.log("******************************************************************")
+    console.log(sqlScript)
+    console.log("******************************************************************")
     await (await connection).query(sqlScript);
 
     console.log('--------------------------------')
