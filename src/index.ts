@@ -21,10 +21,10 @@ async function runMigrations() {
   
       // Run the migration scripts in order
       await runMigrationScript('001_create_table.sql', connection);
-      await runMigrationScript('002_add_test_data.sql' , connection);
       await runMigrationScript('003_create_books_table.sql' , connection);
       await runMigrationScript('004_create_authors_table.sql' , connection);
       await runMigrationScript('005_create_relationship_books_authors_table.sql' , connection);
+      await runMigrationScript('006_update_authors.sql' , connection);
   
       console.log('All migration scripts executed successfully');
     } catch (error) {

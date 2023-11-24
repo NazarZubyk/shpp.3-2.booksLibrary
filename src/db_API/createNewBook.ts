@@ -23,8 +23,8 @@ export async function createNewBook(
     await (await connection).query(sqlScript);
 
     console.log('--------------------------------')
-    console.log('SQL script executed successfully');
-    console.log(`scrypt Path - ${scriptPath}`)
+    console.log(`SQL script executed successfully scrypt Path - ${scriptPath}`);
+    console.log('--------------------------------')
   } catch (error) {
     console.error('Error executing SQL script:', error);
   }

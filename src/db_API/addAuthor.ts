@@ -15,8 +15,8 @@ export async function addsAuthor(
     await (await connection).query(sqlScript);
 
     console.log('--------------------------------')
-    console.log('SQL script executed successfully');
-    console.log(`scrypt Path - ${scriptPath}`)
+    console.log(`SQL script executed successful scrypt Path - ${scriptPath}`);
+    console.log('--------------------------------')
   } catch (error) {
     console.error('Error executing SQL script:', error);
   }

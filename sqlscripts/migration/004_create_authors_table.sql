@@ -1,4 +1,4 @@
 CREATE TABLE IF NOT EXISTS authors (
   author_id INT PRIMARY KEY AUTO_INCREMENT,
-  author_name VARCHAR(255) NOT NULL
+  author_name VARCHAR(255) NOT NULL 
 );

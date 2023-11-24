@@ -1,0 +1,2 @@
+ALTER TABLE authors
+MODIFY COLUMN author_name VARCHAR(255) UNIQUE;
