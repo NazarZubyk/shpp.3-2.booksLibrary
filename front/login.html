@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .login-container {
+            max-width: 300px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 48%; /* Adjusted width to leave some space between buttons */
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login and Register</h2>
+        <form id="authForm">
+            <input id="username" type="text" placeholder="Username" required>
+            <input id="password" type="password" placeholder="Password" required>
+
+            <!-- Toggle buttons for login and register -->
+            <button type="button" onclick="submitForm()">Login</button>
+            <button type="button" onclick="register()">Register</button>
+        </form>
+    </div>
+
+    <!-- ... (your HTML code) -->
+
+<script>
+    function submitForm() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const authData = {
+            username: username,
+            password: password
+        };
+
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(authData)
+        })
+        .then(response => {
+        if (response.redirected) {
+            // If the response is a redirect, manually navigate to the new URL
+            window.location.href = response.url;
+        } else {
+            alert('wrong password')
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+        
+        
+    }
+
+    function register() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const registerData = {
+            username: username,
+            password: password
+        };
+
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(registerData)
+        })
+        .then(response => {
+        if (response.redirected) {
+            // If the response is a redirect, manually navigate to the new URL
+            window.location.href = response.url;
+        } else {
+            alert('this login already exist')
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+        
+    }
+</script>
+
+<!-- ... (rest of your HTML code) -->
+
+</body>
+</html>

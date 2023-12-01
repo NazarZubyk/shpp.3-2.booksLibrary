@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+    }
+
+    #left-container {
+      flex: 1;
+      padding: 20px;
+    }
+
+    #right-container {
+      flex: 1;
+      background-color: #f0f0f0;
+      padding: 20px;
+      position: relative; 
+    }
+
+    #addBookForm button {
+    background-color: green; /* Change the background color to green or any other color */
+    color: white; /* Change the text color to white for better visibility */
+    padding: 10px; /* Add padding for a better visual appearance */
+    border: none; /* Remove border for a cleaner look */
+    cursor: pointer;
+  }
+  
+    #addBookFrame {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 50px; 
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .pagination a {
+      padding: 8px;
+      text-decoration: none;
+      border: 1px solid #ddd;
+      margin: 0 4px;
+      cursor: pointer;
+    }
+
+    #exitButton {
+    position: absolute;
+    bottom: 10px; 
+    right: 10px;
+    padding: 8px;
+    cursor: pointer;
+    z-index: 2;
+    background-color: red;
+    color: white; 
+    border: none; 
+    border-radius: 4px; 
+  }
+  </style>
+</head>
+<body>
+
+  <div id="left-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Назва книги</th>
+          <th>Автори</th>
+          <th>Рік</th>
+          <th>Дії</th>
+          <th>Кліків</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be dynamically populated using JavaScript -->
+      </tbody>
+    </table>
+    <div class="pagination">
+        <script>
+            class Pagination {
+              constructor(items, itemsPerPage) {
+                this.items = items;
+                this.itemsPerPage = itemsPerPage;
+                this.currentPage = 1;
+                this.totalPages = Math.ceil(items.length / itemsPerPage);
+              }
+        
+              displayCurrentPage() {
+                const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+                const endIndex = startIndex + this.itemsPerPage;
+                const visibleItems = this.items.slice(startIndex, endIndex);
+        
+                // Update the table body with visible items
+                const tbody = document.querySelector('tbody');
+                tbody.innerHTML = '';
+                visibleItems.forEach(item => {
+                  const row = document.createElement('tr');
+                  // Implement logic to populate the row based on your item structure
+                  // This is just a placeholder
+                  row.innerHTML = `<td>${item.title}</td><td>${item.authors}</td><td>${item.year}</td><td>Actions</td><td>Clicks</td>`;
+                  tbody.appendChild(row);
+                });
+              }
+        
+              updatePaginationLinks() {
+                const paginationContainer = document.querySelector('.pagination');
+                paginationContainer.innerHTML = '';
+        
+                for (let i = 1; i <= this.totalPages; i++) {
+                  const pageLink = document.createElement('a');
+                  pageLink.href = '#';
+                  pageLink.textContent = i;
+                  pageLink.addEventListener('click', () => this.goToPage(i));
+                  paginationContainer.appendChild(pageLink);
+                }
+              }
+        
+              goToPage(page) {
+                if (page >= 1 && page <= this.totalPages) {
+                  this.currentPage = page;
+                  this.displayCurrentPage();
+                  this.updatePaginationLinks();
+                }
+              }
+        
+              nextPage() {
+                this.goToPage(this.currentPage + 1);
+              }
+        
+              prevPage() {
+                this.goToPage(this.currentPage - 1);
+              }
+            }
+        
+            // Sample data (replace this with your actual data)
+            const items = [
+              { title: 'Book 1', authors: 'Author 1', year: 2021 },
+              { title: 'Book 2', authors: 'Author 2', year: 2022 },
+              // Add more items as needed
+            ];
+        
+            const itemsPerPage = 5; // Adjust as needed
+        
+            // Create a Pagination instance
+            const pagination = new Pagination(items, itemsPerPage);
+        
+            // Display the initial page and pagination links
+            pagination.displayCurrentPage();
+            pagination.updatePaginationLinks();
+          </script>
+        
+    </div>
+  </div>
+
+  <div id="right-container">
+    <div id="addBookFrame">
+      <form id="addBookForm">
+        <div class="form-group">
+          <label for="bookTitle">Назва книги</label>
+          <input type="text" id="bookTitle" placeholder="назва книги" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="publicationYear">Рік видання</label>
+          <input type="text" id="publicationYear" placeholder="рік видання" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="author1">Автор 1</label>
+          <input type="text" id="author1" placeholder="автор 1" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="author2">Автор 2</label>
+          <input type="text" id="author2" placeholder="автор 2">
+        </div>
+  
+        <div class="form-group">
+          <label for="author3">Автор 3</label>
+          <input type="text" id="author3" placeholder="автор 3">
+        </div>
+  
+        <div class="form-group">
+          <label for="description">Опис</label>
+          <textarea id="description" placeholder="опис" required></textarea>
+        </div>
+  
+        <div class="form-group">
+          <label for="coverImage">Завантажити обложку</label>
+          <input type="file" id="coverImage" accept="image/*">
+          <img id="previewImage" alt="Preview" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+        </div>
+  
+        <div class="form-group">
+          <button type="button" onclick="addBook()">Додати</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+
+  <div id="exitButton" onclick="exitApplication()">Вихід</div>
+
+  <script>
+    function addBook() {
+      // Implement logic to add a new book (use values from the input fields)
+    }
+
+    function exitApplication() {
+      // Implement logic to exit the application
+    }
+  </script>
+
+</body>
+</html>
