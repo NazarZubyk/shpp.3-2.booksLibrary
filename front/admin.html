@@ -228,8 +228,63 @@
 
   <script>
     function addBook() {
-      // Implement logic to add a new book (use values from the input fields)
-    }
+  // Step 1: Retrieve values from the input fields
+  const bookTitle = document.getElementById('bookTitle').value;
+  const publicationYear = document.getElementById('publicationYear').value;
+  const author1 = document.getElementById('author1').value;
+  const author2 = document.getElementById('author2').value;
+  const author3 = document.getElementById('author3').value;
+  const description = document.getElementById('description').value;
+  const coverImage = document.getElementById('coverImage').files[0];
+
+  // Step 2: Create a JSON object with the book information
+  const bookData = {
+    bookTitle: bookTitle,
+    publicationYear: publicationYear,
+    authors: [author1, author2, author3].filter(Boolean), // Filter out empty author fields
+    description: description,
+  };
+
+  // Step 3: Send a POST request to the server with the JSON data
+  const formData = new FormData();
+  formData.append('bookData', JSON.stringify(bookData));
+  formData.append('coverImage', coverImage);
+  console.log(formData)
+  fetch('/admin', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Step 4: Handle the success response
+      if (data.success) {
+        // Update the table with books (you need to implement this part)
+        pagination.displayCurrentPage();
+        pagination.updatePaginationLinks();
+
+        // Show an alert that the book is added
+        alert('Book added successfully');
+
+        // Clear all input fields on the right side
+        document.getElementById('bookTitle').value = '';
+        document.getElementById('publicationYear').value = '';
+        document.getElementById('author1').value = '';
+        document.getElementById('author2').value = '';
+        document.getElementById('author3').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('coverImage').value = '';
+        document.getElementById('previewImage').src = ''; // Clear preview image
+      } else {
+        // Handle the case where the server returns an error
+        alert(data?.error);
+      }
+    })
+    .catch((error) => {
+      // Handle errors that occur during the fetch
+      console.error('Error:', error);
+      alert('An error occurred. Please try again later.');
+    });
+}
 
     function exitApplication() {
       // Implement logic to exit the application

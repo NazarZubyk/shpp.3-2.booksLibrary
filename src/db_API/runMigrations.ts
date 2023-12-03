@@ -21,6 +21,8 @@ export async function runMigrations() {
       await runMigrationScript('005_create_relationship_books_authors_table.sql' , connection);
       await runMigrationScript('006_update_authors.sql' , connection);
       await runMigrationScript('007_create_admins.sql' , connection);
+      await runMigrationScript('008_update_books.sql' , connection);
+      await runMigrationScript('009_add_space_for_description.sql' , connection);
       console.log('All migration scripts executed successfully');
     } catch (error) {
       console.error('Error running migration scripts:', error);
