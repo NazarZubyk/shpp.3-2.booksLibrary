@@ -6,6 +6,8 @@ const addAdminScriptPath =  path.join( 'sqlscripts/operation', 'create_admin.sql
 const getAdminPassScriptPath =  path.join( 'sqlscripts/operation', 'get_pass_admin.sql');
 const deleteAdminScriptPath =  path.join( 'sqlscripts/operation', 'delete_admin.sql');
 
+
+// adds new admin in bd
 export async function  addAdmin(
     username: string,
     password: string
@@ -21,6 +23,9 @@ export async function  addAdmin(
     
 }
 
+// gets admin pass by login 
+// !! it is study project all pass is not encrypted
+// !! security has big holes
 export async function  getAdminPass(
     username: string
 ) {

@@ -3,6 +3,9 @@ import { validationResult } from 'express-validator';
 import path from 'path'
 import { getAdminPass } from '../db_API/admins';
 import fileUpload from 'express-fileupload';
+import { addAuthors } from '../db_API/addAuthor';
+import { addBook } from '../db_API/addNewBook';
+import { getLastCreatedFilePath } from './myFileSys';
 
 const fs = require('fs').promises;
 const sourcePath = path.join(__dirname, '..', '..','source', 'images','bookCovers')
@@ -23,6 +26,7 @@ export async function getAdmin (req: Request, res: Response){
     }
 }
 
+//adds a new book to db
 export async function postAdmin (req: Request, res: Response){
     try {
         //validation part
@@ -40,25 +44,27 @@ export async function postAdmin (req: Request, res: Response){
         if(!image){
             return res.status(400).json( { "error": "bad request. image has not upload" } ); 
         }
+        
 
         const date :{
             bookTitle : string,
             publicationYear : string
             authors : string[],
             description : string,
-        } = JSON.parse(req.body.bookData) 
+        } = await JSON.parse(req.body.bookData) 
         
         
-        
+        //get image extention        
         const extention = image.mimetype.split('/')[1]
-        const destinationPath = path.join(sourcePath, `${date.bookTitle}${Date.now()}.${extention}`);
-        const relativeImagePath = path.join('source', 'images','bookCovers',`${date.bookTitle}${Date.now()}.${extention}`)
+        const sanitizedBookTitle = date.bookTitle.replace(/\s+/g, '_');
+
+        const destinationPath = path.join(sourcePath, `${sanitizedBookTitle}${Date.now()}.${extention}`);
+        const relativeImagePath = path.join('source', 'images','bookCovers',`${sanitizedBookTitle}${Date.now()}.${extention}`)
+        
         await fs.writeFile(destinationPath, image.buffer)     
         
-        // console.log(date.bookTitle)
-        // console.log(date.publicationYear)
-        // console.log(date.authors)
-        // console.log(date.description)
+               
+        addBook(sanitizedBookTitle,date.publicationYear,date.description,relativeImagePath,date.authors)
 
         res.send(JSON.stringify({ success: true }))
             

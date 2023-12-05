@@ -1,2 +1,2 @@
 ALTER TABLE authors
-MODIFY COLUMN author_name VARCHAR(255) UNIQUE;
+ADD CONSTRAINT unique_author_name UNIQUE (author_name);

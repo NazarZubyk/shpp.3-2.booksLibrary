@@ -18,7 +18,7 @@ const expressValidator = require('express-validator');
 //   clearDB();
 //   console.log('*********************************************************************')
   
-  // runMigrations();
+//   runMigrations();
 
 
 

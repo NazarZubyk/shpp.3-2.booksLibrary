@@ -4,6 +4,9 @@ import path from 'path';
 
 const scriptPath =  path.join( 'sqlscripts/operation', 'adds_author.sql');
 
+
+// adds one author to db
+// if author is exist will get error (it is fine)
 export async function addsAuthor(
     author: string
         ): Promise<void> {
@@ -14,15 +17,15 @@ export async function addsAuthor(
             
     await (await connection).query(sqlScript);
 
-    console.log('--------------------------------')
-    console.log(`SQL script executed successful scrypt Path - ${scriptPath}`);
-    console.log('--------------------------------')
+    
+    console.log(`adds author success - ${author}`);
+    
   } catch (error) {
     console.error('Error executing SQL script:', error);
   }
 }
 
-
+//addns many authors
 export async function addAuthors(authors:string[]){
     authors.forEach((author)=>{addsAuthor(author)})
 }

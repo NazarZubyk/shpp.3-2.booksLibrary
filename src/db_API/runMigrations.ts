@@ -23,6 +23,7 @@ export async function runMigrations() {
       await runMigrationScript('007_create_admins.sql' , connection);
       await runMigrationScript('008_update_books.sql' , connection);
       await runMigrationScript('009_add_space_for_description.sql' , connection);
+      await runMigrationScript('010_update_books.sql' , connection);
       console.log('All migration scripts executed successfully');
     } catch (error) {
       console.error('Error running migration scripts:', error);
