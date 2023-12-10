@@ -6,6 +6,9 @@ import fileUpload from 'express-fileupload';
 import { addAuthors } from '../db_API/addAuthor';
 import { addBook } from '../db_API/addNewBook';
 import { getLastCreatedFilePath } from './myFileSys';
+import { deleteBookAndBindsByBookId, getBooksDate } from '../db_API/books';
+import { bookAdmin } from './types';
+import { getAuthorsByBookId } from '../db_API/authors';
 
 const fs = require('fs').promises;
 const sourcePath = path.join(__dirname, '..', '..','source', 'images','bookCovers')
@@ -30,10 +33,7 @@ export async function getAdmin (req: Request, res: Response){
 export async function postAdmin (req: Request, res: Response){
     try {
         //validation part
-        // console.log('---------------------------------------------------------------')
-        // console.log(req.body)
-        // console.log(req.file);
-        // console.log('---------------------------------------------------------------')
+        
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             console.log(errors)
@@ -58,8 +58,10 @@ export async function postAdmin (req: Request, res: Response){
         const extention = image.mimetype.split('/')[1]
         const sanitizedBookTitle = date.bookTitle.replace(/\s+/g, '_');
 
-        const destinationPath = path.join(sourcePath, `${sanitizedBookTitle}${Date.now()}.${extention}`);
-        const relativeImagePath = path.join('source', 'images','bookCovers',`${sanitizedBookTitle}${Date.now()}.${extention}`)
+        const newName = `${sanitizedBookTitle}${Date.now()}.${extention}`;
+
+        const destinationPath = path.join(sourcePath, newName);
+        const relativeImagePath = path.join('source', 'images','bookCovers',newName)
         
         await fs.writeFile(destinationPath, image.buffer)     
         
@@ -68,6 +70,50 @@ export async function postAdmin (req: Request, res: Response){
 
         res.send(JSON.stringify({ success: true }))
             
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ "error": "fatal server error" } )
+    }
+}
+
+export async function getAdminBooks (req: Request, res: Response){
+    try {
+        //validation part
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            console.log(errors)
+            return res.status(400).json( { "error": "bad request" } ); 
+        }  
+        
+        const dateReturned = await getBooksDate()
+        let date : bookAdmin[] = dateReturned[0] as any
+        for(const book of date) {
+            const authors:{author_name:string}[] = await getAuthorsByBookId(book.book_id) as any;
+            const authorNamesArray = authors.map(author => author.author_name.trim());
+            book.authors = authorNamesArray;
+        }
+        
+        res.send(JSON.stringify(date))
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ "error": "fatal server error" } )
+    }
+}
+
+export async function deleteBookByIndex (req: Request, res: Response){
+    try {
+        //validation part
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            console.log(errors)
+            return res.status(400).json( { "error": "bad request" } ); 
+        }  
+        const params:{bookId: number} = req.params as any
+        
+        const result:{success:boolean, error?:string} = await deleteBookAndBindsByBookId(params.bookId)
+        
+        
+        res.status(result.success ? 200 : 400).json(result);
     } catch (error) {
         console.error(error)
         res.status(500).json({ "error": "fatal server error" } )

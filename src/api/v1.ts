@@ -1,10 +1,11 @@
 import express from "express"
 
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { getLogin, postLogin } from "../model/login";
 import { postRegister } from "../model/register";
-import { getAdmin, postAdmin } from "../model/admin";
+import { deleteBookByIndex, getAdmin, getAdminBooks, postAdmin } from "../model/admin";
 import path from 'path'
+import { getBookCover, getMainPage } from "../model/mainPage";
 
 
 const multer  = require('multer')
@@ -40,9 +41,20 @@ try {
         ],
         upload.single('coverImage'),
         postAdmin)
+    router.route('/books')
+        .get(getAdminBooks)
+    router.route('/books/:bookId')
+        .delete([
+            param('bookId').notEmpty().isNumeric().isInt()
+        ],deleteBookByIndex)
     
-
+    router.route('/')
+        .get(getMainPage)
     
+    router.route('/book/cover/:bookId')
+        .get([
+            param('bookId').notEmpty().isNumeric().isInt()
+        ],getBookCover)
 } catch (error) {
     console.error(error)
 }

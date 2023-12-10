@@ -59,16 +59,19 @@
         <div class="container">
             <div id="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <% books.forEach(book => { %>
-                    <div data-book-id="<%= book.id %>" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                    <div data-book-id="<%= book.book_id %>" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
                         <div class="book">
-                            <a href="/book/<%= book.id %>">
-                                <img src="/static/books-page/books-page_files/<%= book.id %>.jpg" alt="<%= book.title %>">
-                                <div data-title="<%= book.title %>" class="blockI" style="height: 46px;">
-                                    <div data-book-title="<%= book.title %>" class="title size_text"><%= book.title %></div>
-                                    <div data-book-author="<%= book.author %>" class="author"><%= book.author %></div>
+                            <a href="/book/<%= book.book_id %>">
+                                <!-- Update the src attribute to fetch the image dynamically -->
+                                <img src="book/cover/<%= book.book_id %>" alt="<%= book.book_name %>">
+                                <div data-title="<%= book.book_name %>" class="blockI" style="height: 46px;">
+                                    <div data-book-title="<%= book.book_name %>" class="title size_text"><%= book.book_name %></div>
+                                    <div data-book-author="<%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>" class="author">
+                                        <%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>
+                                    </div>                                    
                                 </div>
                             </a>
-                            <a href="/book/<%= book.id %>">
+                            <a href="/book/<%= book.book_id %>">
                                 <button type="button" class="details btn btn-success">Читать</button>
                             </a>
                         </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,21 +23,21 @@
       flex: 1;
       background-color: #f0f0f0;
       padding: 20px;
-      position: relative; 
+      position: relative;
     }
 
     #addBookForm button {
-    background-color: green; /* Change the background color to green or any other color */
-    color: white; /* Change the text color to white for better visibility */
-    padding: 10px; /* Add padding for a better visual appearance */
-    border: none; /* Remove border for a cleaner look */
-    cursor: pointer;
-  }
-  
+      background-color: green;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
     #addBookFrame {
       border: 1px solid #ccc;
       padding: 15px;
-      margin-bottom: 50px; 
+      margin-bottom: 50px;
     }
 
     table {
@@ -70,19 +71,26 @@
     }
 
     #exitButton {
-    position: absolute;
-    bottom: 10px; 
-    right: 10px;
-    padding: 8px;
-    cursor: pointer;
-    z-index: 2;
-    background-color: red;
-    color: white; 
-    border: none; 
-    border-radius: 4px; 
-  }
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      padding: 8px;
+      cursor: pointer;
+      z-index: 2;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    #previewImage {
+      width: 200px;
+      height: auto;
+      margin-top: 10px;
+    }
   </style>
 </head>
+
 <body>
 
   <div id="left-container">
@@ -101,79 +109,8 @@
       </tbody>
     </table>
     <div class="pagination">
-        <script>
-            class Pagination {
-              constructor(items, itemsPerPage) {
-                this.items = items;
-                this.itemsPerPage = itemsPerPage;
-                this.currentPage = 1;
-                this.totalPages = Math.ceil(items.length / itemsPerPage);
-              }
-        
-              displayCurrentPage() {
-                const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-                const endIndex = startIndex + this.itemsPerPage;
-                const visibleItems = this.items.slice(startIndex, endIndex);
-        
-                // Update the table body with visible items
-                const tbody = document.querySelector('tbody');
-                tbody.innerHTML = '';
-                visibleItems.forEach(item => {
-                  const row = document.createElement('tr');
-                  // Implement logic to populate the row based on your item structure
-                  // This is just a placeholder
-                  row.innerHTML = `<td>${item.title}</td><td>${item.authors}</td><td>${item.year}</td><td>Actions</td><td>Clicks</td>`;
-                  tbody.appendChild(row);
-                });
-              }
-        
-              updatePaginationLinks() {
-                const paginationContainer = document.querySelector('.pagination');
-                paginationContainer.innerHTML = '';
-        
-                for (let i = 1; i <= this.totalPages; i++) {
-                  const pageLink = document.createElement('a');
-                  pageLink.href = '#';
-                  pageLink.textContent = i;
-                  pageLink.addEventListener('click', () => this.goToPage(i));
-                  paginationContainer.appendChild(pageLink);
-                }
-              }
-        
-              goToPage(page) {
-                if (page >= 1 && page <= this.totalPages) {
-                  this.currentPage = page;
-                  this.displayCurrentPage();
-                  this.updatePaginationLinks();
-                }
-              }
-        
-              nextPage() {
-                this.goToPage(this.currentPage + 1);
-              }
-        
-              prevPage() {
-                this.goToPage(this.currentPage - 1);
-              }
-            }
-        
-            // Sample data (replace this with your actual data)
-            const items = [
-              { title: 'Book 1', authors: 'Author 1', year: 2021 },
-              { title: 'Book 2', authors: 'Author 2', year: 2022 },
-              // Add more items as needed
-            ];
-        
-            const itemsPerPage = 5; // Adjust as needed
-        
-            // Create a Pagination instance
-            const pagination = new Pagination(items, itemsPerPage);
-        
-            // Display the initial page and pagination links
-            pagination.displayCurrentPage();
-            pagination.updatePaginationLinks();
-          </script>
-        
+      
+
     </div>
   </div>
 
@@ -184,107 +121,220 @@
           <label for="bookTitle">Назва книги</label>
           <input type="text" id="bookTitle" placeholder="назва книги" required>
         </div>
-  
+
         <div class="form-group">
           <label for="publicationYear">Рік видання</label>
           <input type="text" id="publicationYear" placeholder="рік видання" required>
         </div>
-  
+
         <div class="form-group">
           <label for="author1">Автор 1</label>
           <input type="text" id="author1" placeholder="автор 1" required>
         </div>
-  
+
         <div class="form-group">
           <label for="author2">Автор 2</label>
           <input type="text" id="author2" placeholder="автор 2">
         </div>
-  
+
         <div class="form-group">
           <label for="author3">Автор 3</label>
           <input type="text" id="author3" placeholder="автор 3">
         </div>
-  
+
         <div class="form-group">
           <label for="description">Опис</label>
           <textarea id="description" placeholder="опис" required></textarea>
         </div>
-  
+
         <div class="form-group">
           <label for="coverImage">Завантажити обложку</label>
-          <input type="file" id="coverImage" accept="image/*">
-          <img id="previewImage" alt="Preview" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+          <input type="file" id="coverImage" accept="image/*" onchange="previewImage()">
+          <img id="previewImage" alt="Preview" class="preview-image">
         </div>
-  
+
         <div class="form-group">
           <button type="button" onclick="addBook()">Додати</button>
         </div>
       </form>
     </div>
   </div>
-  
 
   <div id="exitButton" onclick="exitApplication()">Вихід</div>
 
   <script>
-    function addBook() {
-  // Step 1: Retrieve values from the input fields
-  const bookTitle = document.getElementById('bookTitle').value;
-  const publicationYear = document.getElementById('publicationYear').value;
-  const author1 = document.getElementById('author1').value;
-  const author2 = document.getElementById('author2').value;
-  const author3 = document.getElementById('author3').value;
-  const description = document.getElementById('description').value;
-  const coverImage = document.getElementById('coverImage').files[0];
-
-  // Step 2: Create a JSON object with the book information
-  const bookData = {
-    bookTitle: bookTitle,
-    publicationYear: publicationYear,
-    authors: [author1, author2, author3].filter(Boolean), // Filter out empty author fields
-    description: description,
-  };
-
-  // Step 3: Send a POST request to the server with the JSON data
-  const formData = new FormData();
-  formData.append('bookData', JSON.stringify(bookData));
-  formData.append('coverImage', coverImage);
-  console.log(formData)
-  fetch('/admin', {
-    method: 'POST',
-    body: formData,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      // Step 4: Handle the success response
-      if (data.success) {
-        // Update the table with books (you need to implement this part)
-        pagination.displayCurrentPage();
-        pagination.updatePaginationLinks();
-
-        // Show an alert that the book is added
-        alert('Book added successfully');
-
-        // Clear all input fields on the right side
-        document.getElementById('bookTitle').value = '';
-        document.getElementById('publicationYear').value = '';
-        document.getElementById('author1').value = '';
-        document.getElementById('author2').value = '';
-        document.getElementById('author3').value = '';
-        document.getElementById('description').value = '';
-        document.getElementById('coverImage').value = '';
-        document.getElementById('previewImage').src = ''; // Clear preview image
-      } else {
-        // Handle the case where the server returns an error
-        alert(data?.error);
-      }
-    })
-    .catch((error) => {
-      // Handle errors that occur during the fetch
-      console.error('Error:', error);
-      alert('An error occurred. Please try again later.');
+    document.addEventListener('DOMContentLoaded', function () {
+      // Retrieve books when the page is loaded
+      retrieveBooks();
     });
-}
+
+    function retrieveBooks() {
+      fetch('/books') // Replace '/books' with your actual server endpoint
+        .then(response => response.json())
+        .then(data => {
+          // Assuming data is an array of book objects
+          displayBooks(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred while retrieving books. Please try again later.');
+        });
+    }
+
+    function displayBooks(books) {
+      // Display 10 books per page
+      const ITEMS_PER_PAGE = 10;
+
+      // Create a Pagination instance
+      const pagination = new Pagination(books, ITEMS_PER_PAGE);
+
+      // Display the initial page and pagination links
+      pagination.displayCurrentPage();
+      pagination.updatePaginationLinks();
+    }
+
+    class Pagination {
+      constructor(items, itemsPerPage) {
+        this.items = items; // Ensure that this.items is properly assigned
+        this.itemsPerPage = itemsPerPage;
+        this.currentPage = 1;
+        this.totalPages = Math.ceil(items.length / itemsPerPage);
+      }
+
+      displayCurrentPage() {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        const visibleItems = this.items.slice(startIndex, endIndex);
+
+        // Update the table body with visible items
+        const tbody = document.querySelector('tbody');
+        tbody.innerHTML = '';
+        visibleItems.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `<td>${item.book_name}</td><td>${item.authors.join(', ')}</td><td>${item.publication_date}</td><td><button onclick="deleteBook('${item.book_id}')">Delete</button></td><td>Clicks</td>`;
+          tbody.appendChild(row);
+        });
+      }
+
+      updatePaginationLinks() {
+        const paginationContainer = document.querySelector('.pagination');
+        paginationContainer.innerHTML = '';
+
+        for (let i = 1; i <= this.totalPages; i++) {
+          const pageLink = document.createElement('a');
+          pageLink.href = '#';
+          pageLink.textContent = i;
+          pageLink.addEventListener('click', () => this.goToPage(i));
+          paginationContainer.appendChild(pageLink);
+        }
+      }
+
+      goToPage(pageNumber) {
+        this.currentPage = pageNumber;
+        this.displayCurrentPage();
+        this.updatePaginationLinks();
+      }
+    }
+
+    function deleteBook(bookId) {
+      const confirmation = confirm('Are you sure you want to delete this book?');
+
+      if (confirmation) {
+        fetch(`/books/${bookId}`, { method: 'DELETE' }) // Replace '/books' with your actual server endpoint
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              retrieveBooks(); // Refresh the book list after deletion
+              alert('Book deleted successfully');
+            } else {
+              alert(data?.error);
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the book. Please try again later.');
+          });
+      }
+    }
+  
+    document.getElementById('coverImage').addEventListener('change', previewImage);
+
+    function previewImage() {
+      const coverImageInput = document.getElementById('coverImage');
+      const previewImage = document.getElementById('previewImage');
+
+      if (coverImageInput.files.length > 0) {
+        const selectedImage = coverImageInput.files[0];
+
+        // Use FileReader to read the selected image as a data URL
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImage.src = e.target.result;
+        };
+        reader.readAsDataURL(selectedImage);
+      } else {
+        // Clear the preview if no image is selected
+        previewImage.src = '';
+      }
+    }
+
+    function addBook() {
+      // Step 1: Retrieve values from the input fields
+      const bookTitle = document.getElementById('bookTitle').value;
+      const publicationYear = document.getElementById('publicationYear').value;
+      const author1 = document.getElementById('author1').value;
+      const author2 = document.getElementById('author2').value;
+      const author3 = document.getElementById('author3').value;
+      const description = document.getElementById('description').value;
+      const coverImage = document.getElementById('coverImage').files[0];
+
+      // Step 2: Create a JSON object with the book information
+      const bookData = {
+        bookTitle: bookTitle,
+        publicationYear: publicationYear,
+        authors: [author1, author2, author3].filter(Boolean), // Filter out empty author fields
+        description: description,
+      };
+
+      // Step 3: Send a POST request to the server with the JSON data
+      const formData = new FormData();
+      formData.append('bookData', JSON.stringify(bookData));
+      formData.append('coverImage', coverImage);
+
+      fetch('/admin', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Step 4: Handle the success response
+          if (data.success) {
+            
+
+            // Show an alert that the book is added
+            alert('Book added successfully');
+
+            // Clear all input fields on the right side
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('publicationYear').value = '';
+            document.getElementById('author1').value = '';
+            document.getElementById('author2').value = '';
+            document.getElementById('author3').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('coverImage').value = '';
+            document.getElementById('previewImage').src = ''; // Clear preview image
+          } else {
+            // Handle the case where the server returns an error
+            alert(data?.error);
+          }
+        })
+        .catch((error) => {
+          // Handle errors that occur during the fetch
+          console.error('Error:', error);
+          alert('An error occurred. Please try again later.');
+        });
+      document.getElementById('previewImage').src = '';
+    }
 
     function exitApplication() {
       // Implement logic to exit the application
@@ -292,4 +342,5 @@
   </script>
 
 </body>
+
 </html>
