@@ -1,11 +1,12 @@
 import express from "express"
 
-import { body, param } from 'express-validator';
+import { query, body, param } from 'express-validator';
 import { getLogin, postLogin } from "../model/login";
 import { postRegister } from "../model/register";
 import { deleteBookByIndex, getAdmin, getAdminBooks, postAdmin } from "../model/admin";
 import path from 'path'
 import { getBookCover, getMainPage } from "../model/mainPage";
+import { getBookPage } from "../model/bookPage";
 
 
 const multer  = require('multer')
@@ -49,12 +50,23 @@ try {
         ],deleteBookByIndex)
     
     router.route('/')
-        .get(getMainPage)
+        .get([
+            query('offset').optional().notEmpty().isNumeric(),
+            query('search').optional().notEmpty().isString(),
+            query('author').optional().notEmpty().isNumeric(),
+            query('year').optional().notEmpty().isNumeric(),
+            query('page').optional().notEmpty().isNumeric()
+        ],getMainPage)
     
     router.route('/book/cover/:bookId')
         .get([
             param('bookId').notEmpty().isNumeric().isInt()
         ],getBookCover)
+    
+    router.route('/book/')
+        .get([
+            query('bookID').optional().notEmpty().isNumeric(),
+        ],getBookPage)
 } catch (error) {
     console.error(error)
 }

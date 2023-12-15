@@ -1,2 +1,4 @@
 SELECT book_id, book_name
-FROM books;
+FROM books
+ORDER BY book_id 
+LIMIT ? OFFSET ?;

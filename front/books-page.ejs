@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+    
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,6 +15,27 @@
 
     <link rel="shortcut icon" href="http://localhost:3000/favicon.ico">
     <style>
+        .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn-pagination {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 0 5px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #337ab7; /* You can customize the background color */
+        border: 1px solid #2e6da4; /* You can customize the border color */
+        border-radius: 5px;
+    }
+
+    .btn-pagination:hover {
+        background-color: #286090; /* You can customize the hover background color */
+        border-color: #204d74; /* You can customize the hover border color */
+    }
+
     	.details {
 			display: none;
     	}
@@ -21,6 +43,9 @@
 </head>
 
 <body>
+    <script>
+        var searchText = null;
+    </script>
     <section id="header" class="header-wrapper">
         <nav class="navbar navbar-default">
             <div class="container">
@@ -37,8 +62,14 @@
                                       $("#search").bind("keypress", function (e) {
                                           if (e.keyCode == 13) {
                                               e.preventDefault();
-                                              alert("а вот это придется сделать самому. Ваш @rshmelev");
-                                          }
+
+                                              var searchText = $("#search").val().trim();
+
+                                                // Update the URL with the new search query
+                                                window.location.search = searchText ? '?search=' + encodeURIComponent(searchText) : '';
+
+
+                                            }
                                       })
                                     </script>
 
@@ -58,26 +89,40 @@
     <section id="main" class="main-wrapper">
         <div class="container">
             <div id="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <% books.forEach(book => { %>
-                    <div data-book-id="<%= book.book_id %>" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                        <div class="book">
-                            <a href="/book/<%= book.book_id %>">
-                                <!-- Update the src attribute to fetch the image dynamically -->
-                                <img src="book/cover/<%= book.book_id %>" alt="<%= book.book_name %>">
-                                <div data-title="<%= book.book_name %>" class="blockI" style="height: 46px;">
-                                    <div data-book-title="<%= book.book_name %>" class="title size_text"><%= book.book_name %></div>
-                                    <div data-book-author="<%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>" class="author">
-                                        <%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>
-                                    </div>                                    
-                                </div>
-                            </a>
-                            <a href="/book/<%= book.book_id %>">
-                                <button type="button" class="details btn btn-success">Читать</button>
-                            </a>
+                <% if (books.length > 0) { %>
+                    <% books.forEach(book => { %>
+                        <div data-book-id="<%= book.book_id %>" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                            <div class="book">
+                                <a href="/book/?bookID=<%=book.book_id%>">
+                                    <!-- Update the src attribute to fetch the image dynamically -->
+                                    <img src="book/cover/<%= book.book_id %>" alt="<%= book.book_name %>">
+                                    <div data-title="<%= book.book_name %>" class="blockI" style="height: 46px;">
+                                        <div data-book-title="<%= book.book_name %>" class="title size_text"><%= book.book_name %></div>
+                                        <div data-book-author="<%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>" class="author">
+                                            <%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>
+                                        </div>                                    
+                                    </div>
+                                </a>
+                                <a href="/book/<%= book.book_id %>">
+                                    <button type="button" class="details btn btn-success">Читать</button>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                <% }); %>
+                    <% }); %>
+                <% } else { %>
+                    <p>Cannot find books by search text: <%= searchText %></p>
+                <% } %>
             </div>
+            <div class="pagination">
+                <% if (page > 0) { %>
+                    <a href="?page=<%= page - 1 %>&offset=20<%= searchText ? '&search=' + encodeURIComponent(searchText) : '' %>" class="btn btn-pagination">Previous</a>
+                <% } %>
+                <% if (books.length === 20) { %>
+                    <a href="?page=<%= page + 1 %>&offset=20<%= searchText ? '&search=' + encodeURIComponent(searchText) : '' %>" class="btn btn-pagination">Next</a>
+                <% } %>
+            </div>
+            
+            
         </div>
     </section>
 

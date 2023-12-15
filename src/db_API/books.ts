@@ -4,9 +4,11 @@ import { connection } from './connect';
 
 const getBooksTableScryptPath =  path.join( 'sqlscripts/operation', 'get_id_title_year_books.sql');
 const getBooksIdTitleScryptPath =  path.join( 'sqlscripts/operation', 'get_id_title.sql');
+const getBooksIdTitleScryptPathSearch =  path.join( 'sqlscripts/operation', 'get_id_title_serch.sql');
 const deleteBookByBookIdScryptPath =  path.join( 'sqlscripts/operation', 'delete_book_by_index.sql');
 const deleteBindsByBookIdScryptPath =  path.join( 'sqlscripts/operation', 'delete_binding_by_book_index.sql');
 const getCoverByBookIDscryptPath = path.join( 'sqlscripts/operation', 'get_book_title_url.sql');
+const getBookDataScryptPath = path.join( 'sqlscripts/operation', 'get_book.sql');
 
 export async function  getBooksDate() {
     
@@ -15,10 +17,24 @@ export async function  getBooksDate() {
     return date;
 }
 
-export async function  getIdAndTitleOfBooks() {
+export async function  getBook(bookID: number) {
+    
+    let sqlScript = fs.readFileSync(getBookDataScryptPath, 'utf-8');
+    const date =  await (await connection).query(sqlScript,[bookID])
+    return date;
+}
+
+export async function  getIdAndTitleOfBooks(quantyty: number, fromPosition : number) {
     
     let sqlScript = fs.readFileSync(getBooksIdTitleScryptPath, 'utf-8');
-    const date =  await (await connection).query(sqlScript)
+    const date =  await (await connection).query(sqlScript,[quantyty,fromPosition])
+    return date;
+}
+
+export async function  getIdAndTitleOfBooksSearch(quantyty: number, fromPosition : number, search: string) {
+    
+    let sqlScript = fs.readFileSync(getBooksIdTitleScryptPathSearch, 'utf-8');
+    const date =  await (await connection).query(sqlScript,[search,quantyty,fromPosition])
     return date;
 }
 
