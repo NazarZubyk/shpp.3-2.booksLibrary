@@ -211,7 +211,7 @@
         tbody.innerHTML = '';
         visibleItems.forEach(item => {
           const row = document.createElement('tr');
-          row.innerHTML = `<td>${item.book_name}</td><td>${item.authors.join(', ')}</td><td>${item.publication_date}</td><td><button onclick="deleteBook('${item.book_id}')">Delete</button></td><td>Clicks</td>`;
+          row.innerHTML = `<td>${item.book_name}</td><td>${item.authors.join(', ')}</td><td>${item.publication_date}</td><td><button onclick="deleteBook('${item.book_id}')">Delete</button></td><td>${item.clicks}</td>`;
           tbody.appendChild(row);
         });
       }

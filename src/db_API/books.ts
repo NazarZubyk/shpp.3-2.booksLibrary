@@ -2,13 +2,15 @@ import * as fs from 'fs';
 import path from 'path';
 import { connection } from './connect';
 
-const getBooksTableScryptPath =  path.join( 'sqlscripts/operation', 'get_id_title_year_books.sql');
+const getBooksTableScryptPath =  path.join( 'sqlscripts/operation', 'get_id_title_year_books_clicks.sql');
 const getBooksIdTitleScryptPath =  path.join( 'sqlscripts/operation', 'get_id_title.sql');
 const getBooksIdTitleScryptPathSearch =  path.join( 'sqlscripts/operation', 'get_id_title_serch.sql');
 const deleteBookByBookIdScryptPath =  path.join( 'sqlscripts/operation', 'delete_book_by_index.sql');
 const deleteBindsByBookIdScryptPath =  path.join( 'sqlscripts/operation', 'delete_binding_by_book_index.sql');
 const getCoverByBookIDscryptPath = path.join( 'sqlscripts/operation', 'get_book_title_url.sql');
 const getBookDataScryptPath = path.join( 'sqlscripts/operation', 'get_book.sql');
+const incrementViewByIDScryptPath = path.join( 'sqlscripts/operation', 'increment_view.sql');
+const incrementClicksByIDScryptPath = path.join( 'sqlscripts/operation', 'increment_click.sql');
 
 export async function  getBooksDate() {
     
@@ -55,6 +57,20 @@ export async function  deleteBookAndBindsByBookId(bookId:number) {
 
 export async function getImaheUrlByBookID(bookId:number) {
     let scryptPath = fs.readFileSync(getCoverByBookIDscryptPath, 'utf-8');
+
+    const imageUrl = await (await connection).query(scryptPath,[bookId])
+    return imageUrl[0];
+}
+
+export async function incrementViewByID(bookId:number) {
+    let scryptPath = fs.readFileSync(incrementViewByIDScryptPath, 'utf-8');
+
+    const imageUrl = await (await connection).query(scryptPath,[bookId])
+    return imageUrl[0];
+}
+
+export async function incrementClickByID(bookId:number) {
+    let scryptPath = fs.readFileSync(incrementClicksByIDScryptPath, 'utf-8');
 
     const imageUrl = await (await connection).query(scryptPath,[bookId])
     return imageUrl[0];

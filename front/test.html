@@ -1,3 +1,51 @@
-<div data-book-author="<%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>" class="author">
-    <%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>
+<div id="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <% books.forEach(book => { %>
+        <div data-book-id="<%= book.book_id %>" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
+            <div class="book">
+                <a href="/book/<%= book.book_id %>">
+                    <!-- Update the src attribute to fetch the image dynamically -->
+                    <img src="book/cover/<%= book.book_id %>" alt="<%= book.book_name %>">
+                    <div data-title="<%= book.book_name %>" class="blockI" style="height: 46px;">
+                        <div data-book-title="<%= book.book_name %>" class="title size_text"><%= book.book_name %></div>
+                        <div data-book-author="<%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>" class="author">
+                            <%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>
+                        </div>                                    
+                    </div>
+                </a>
+                <a href="/book/<%= book.book_id %>">
+                    <button type="button" class="details btn btn-success">Читать</button>
+                </a>
+            </div>
+        </div>
+    <% }); %>
 </div>
+
+<!-- ... Your existing HTML code ... -->
+
+<div id="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <% if (books.length > 0) { %>
+        <% books.forEach(book => { %>
+            <div data-book-id="<%= book.book_id %>" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                <div class="book">
+                    <a href="/book/<%= book.book_id %>">
+                        <!-- Update the src attribute to fetch the image dynamically -->
+                        <img src="book/cover/<%= book.book_id %>" alt="<%= book.book_name %>">
+                        <div data-title="<%= book.book_name %>" class="blockI" style="height: 46px;">
+                            <div data-book-title="<%= book.book_name %>" class="title size_text"><%= book.book_name %></div>
+                            <div data-book-author="<%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>" class="author">
+                                <%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>
+                            </div>                                    
+                        </div>
+                    </a>
+                    <a href="/book/<%= book.book_id %>">
+                        <button type="button" class="details btn btn-success">Читать</button>
+                    </a>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>Cannot find books by search text: <%= searchText %></p>
+    <% } %>
+</div>
+
+<!-- ... Your existing HTML code ... -->

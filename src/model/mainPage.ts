@@ -42,7 +42,9 @@ export async function getMainPage(req:Request,res:Response) {
     const mainEjsPath = path.join(frontPath,'books-page.ejs')
         
     res.render(mainEjsPath, {books,page, searchText})
+    
 }
+
 
 export async function getBookCover(req:Request,res:Response) {
     const errors = validationResult(req);

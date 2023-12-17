@@ -71,8 +71,18 @@ $('.btnBookID').click(function(event) {
             " Лучше предварительно прозвонить и предупредить нас, чтоб " +
             " не попасть в неловкую ситуацию. Тел. 099 196 24 69"+
             " \n\n"+
-            "******************\n"+
-            "Кстати, если вы читаете этот текст, то автор сайта еще не отсылает ajax запрос на увеличение количества кликов на кнопку по этой книге"
-        );
+            "******************\n"
+            );
+            var bookID = document.getElementById('id').getAttribute('book-id');
+        fetch('/book/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                click: true,
+                bookID: bookID
+            })
+        })
     }
 });

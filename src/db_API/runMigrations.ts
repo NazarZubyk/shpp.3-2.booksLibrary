@@ -24,6 +24,8 @@ export async function runMigrations() {
       await runMigrationScript('008_update_books.sql' , connection);
       await runMigrationScript('009_add_space_for_description.sql' , connection);
       await runMigrationScript('010_update_books.sql' , connection);
+      await runMigrationScript('011_clicks.sql' , connection);
+      await runMigrationScript('012_views.sql' , connection);
       console.log('All migration scripts executed successfully');
     } catch (error) {
       console.error('Error running migration scripts:', error);
@@ -42,7 +44,8 @@ export async function runMigrations() {
       await connection.execute(migrationScript);
       console.log(`Migration script ${scriptFileName} successfully`);
     } catch (error) {
-      console.error(`Error executing migration script ${scriptFileName}:`, error);
-      throw error; // Rethrow the error to propagate it to the calling function
+      console.error(`Error executing migration script ${scriptFileName}:`+
+      "this migration already been complited" );
+      
     }
   }

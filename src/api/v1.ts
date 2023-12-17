@@ -6,7 +6,7 @@ import { postRegister } from "../model/register";
 import { deleteBookByIndex, getAdmin, getAdminBooks, postAdmin } from "../model/admin";
 import path from 'path'
 import { getBookCover, getMainPage } from "../model/mainPage";
-import { getBookPage } from "../model/bookPage";
+import { clickIncremet, getBookPage } from "../model/bookPage";
 
 
 const multer  = require('multer')
@@ -67,6 +67,12 @@ try {
         .get([
             query('bookID').optional().notEmpty().isNumeric(),
         ],getBookPage)
+
+    router.route('/book/')
+        .post([
+            body('click').notEmpty().isBoolean(),
+            body('bookID').notEmpty().isNumeric()
+        ],clickIncremet)
 } catch (error) {
     console.error(error)
 }

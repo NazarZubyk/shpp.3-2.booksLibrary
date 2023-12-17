@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import path from 'path';
-import { getBook, getIdAndTitleOfBooks, getIdAndTitleOfBooksSearch, getImaheUrlByBookID } from '../db_API/books';
+import { getBook, getIdAndTitleOfBooks, getIdAndTitleOfBooksSearch, getImaheUrlByBookID, incrementClickByID, incrementViewByID } from '../db_API/books';
 import { bookBook, bookMain } from './types';
 import { getAuthorsByBookId } from '../db_API/authors';
 import { validationResult } from 'express-validator';
@@ -31,6 +31,8 @@ export async function getBookPage(req:Request,res:Response) {
     }
     
     if(data){
+        incrementViewByID(data.book_id)
+
         const authors:{author_name:string}[] = await getAuthorsByBookId(data.book_id) as any;
         const authorNamesArray = authors.map(author => author.author_name.trim());
         data.authors = authorNamesArray;
@@ -48,13 +50,18 @@ export async function getBookPage(req:Request,res:Response) {
 
         res.render(mainEjsPath, {book})
     }
-    
-    
-    
-    
-
-    
-    
-        
-    
 }
+
+
+export async function clickIncremet(req:Request,res:Response) {
+    const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            console.log(errors)
+            return res.status(400).json( { "error": "bad request" } ); 
+        } 
+    const body :{click:boolean,bookID:number }  = req.body;
+        
+        if(body.click){
+            incrementClickByID(body.bookID)
+        }
+    }

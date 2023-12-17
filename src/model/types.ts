@@ -2,7 +2,8 @@ export interface bookAdmin{
     book_id : number,
     book_name :string,
     publication_date :number,
-    authors ?: string[]
+    authors ?: string[],
+    clicks: number
 }
 
 export interface bookMain{
