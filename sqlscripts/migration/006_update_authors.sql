@@ -1,1 +1,0 @@
-ALTER TABLE authors MODIFY author_name VARCHAR(255) UNIQUE;

@@ -1,1 +1,0 @@
-ALTER TABLE books MODIFY book_name VARCHAR(255) UNIQUE;

@@ -1,0 +1,1 @@
+SELECT deleted FROM books WHERE book_id = ?

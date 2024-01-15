@@ -1,0 +1,1 @@
+ALTER TABLE books MODIFY COLUMN publication_date VARCHAR(255);

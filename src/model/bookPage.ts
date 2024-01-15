@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import path from 'path';
-import { getBook, getIdAndTitleOfBooks, getIdAndTitleOfBooksSearch, getImaheUrlByBookID, incrementClickByID, incrementViewByID } from '../db_API/books';
+import { getBook, getIdAndTitleOfBooks, getIdAndTitleOfBooksSearch, incrementClickByID, incrementViewByID, isBookDeleted } from '../db_API/books';
 import { bookBook, bookMain } from './types';
 import { getAuthorsByBookId } from '../db_API/authors';
 import { validationResult } from 'express-validator';
 import ejs from 'ejs';
 import { off } from 'process';
 
-const frontPath = path.join(__dirname, '..', '..','front')
+const frontPath = path.join(__dirname, '..', '..','front','book-page')
 const dirPath = path.join(__dirname, '..', '..')
 
 export async function getBookPage(req:Request,res:Response) {
@@ -20,8 +20,10 @@ export async function getBookPage(req:Request,res:Response) {
     const bookID: number | undefined = req.query.bookID as any
     
     let data: bookBook | undefined;
-
-    if(bookID){
+    
+    if(bookID 
+        //&& !await isBookDeleted(bookID as number)
+        ){
         const dataSQL = await getBook(bookID)
         const dataArray: bookBook[] = dataSQL[0] as any
         data = dataArray[0];

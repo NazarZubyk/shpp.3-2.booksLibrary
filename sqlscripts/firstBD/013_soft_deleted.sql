@@ -1,0 +1,2 @@
+ALTER TABLE books
+ADD COLUMN deleted INT DEFAULT 0;

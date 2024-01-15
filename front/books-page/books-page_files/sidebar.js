@@ -6,8 +6,9 @@ $('.sidebar_item').click(function (event) {
     (function () {
             var data = {
                 filter: filter || 'new',
-                offset: getParameterByName('offset'),
-                limit: global.items_limit_on_page_load
+                offset: getParameterByName('offset') || offset,
+                limit: global.items_limit_on_page_load,
+                page: page || 1
             };
         loadIndexPage(data);
         isScrollRunning = false;
