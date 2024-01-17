@@ -24,7 +24,7 @@ const cron = require('node-cron');
   
   //runUpdates();
 //migrateDBfrotmV0toV1()
-migrateDBfrotmV1toV0()
+//migrateDBfrotmV1toV0()
 //loadBackup('/home/nazar/jsFromGit/3.2/3.2/source/dump/backup_1705010400053.sql')
 
 
