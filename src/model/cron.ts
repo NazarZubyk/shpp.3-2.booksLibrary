@@ -25,10 +25,10 @@ export async function createBackup() {
     const dumpPath = path.join(__dirname,'..','..','source','dump',newName)
     mysqldump({
         connection: {
-            host: 'localhost',
-            user: 'root',
-            password: '88888888',
-            database: 'myDB',
+            host: process.env.DB_HOST || 'localhost',
+            user: process.env.DB_USER || 'root',
+            password: process.env.DB_PASSWORD || '88888888',
+            database: process.env.DB_NAME || 'myDB'
         },
         dumpToFile: dumpPath,
     });

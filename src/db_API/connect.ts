@@ -34,8 +34,8 @@ const connectWithRetry = async (config: DbConfig, retries = 5, delay = 5000): Pr
 const dbConfig: DbConfig = {
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'test'
+  password: process.env.DB_PASSWORD || '88888888',
+  database: process.env.DB_NAME || 'myDB'
 };
 
 export const connection = connectWithRetry(dbConfig);
