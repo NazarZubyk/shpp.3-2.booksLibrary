@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { connection } from './connect';
+import { connection  } from './connect';
 import path from 'path';
 
 const scriptPath2 =  path.join( 'sqlscripts/operation', 'delete_all_authors.sql');

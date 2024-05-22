@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+    
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,48 +16,55 @@
     <script src="/static/books-page/books-page_files/index.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" crossorigin="anonymous"/>
-    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link rel="shortcut icon" href="http://nazarzo.site/favicon.ico">
     <style>
         .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .btn-pagination {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 0 5px;
-            text-decoration: none;
-            color: #fff;
-            background-color: #337ab7; 
-            border: 1px solid #2e6da4; 
-            border-radius: 5px;
-        }
-        .btn-pagination:hover {
-            background-color: #286090; 
-            border-color: #204d74; 
-        }
-        .btn-signin {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 0 5px;
-            text-decoration: none;
-            color: #fff;
-            background-color: #b73333; 
-            border: 1px solid #a42e2e; 
-            border-radius: 5px;
-        }
-        .btn-signin:hover {
-            background-color: #902828; 
-            border-color: #742020; 
-        }
-        .details {
-            display: none;
-        }
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn-pagination {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 0 5px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #337ab7; 
+        border: 1px solid #2e6da4; 
+        border-radius: 5px;
+    }
+
+    .btn-pagination:hover {
+        background-color: #286090; 
+        border-color: #204d74; 
+    }
+
+    .btn-signin {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 0 5px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #b73333; 
+        border: 1px solid #a42e2e; 
+        border-radius: 5px;
+    }
+
+    .btn-signin:hover {
+        background-color: #902828; 
+        border-color: #742020; 
+    }
+
+    	.details {
+			display: none;
+    	}
     </style>
 </head>
 
 <body>
     <script>
+       
         var searchText = null;
         var filter;
     </script>
@@ -64,11 +72,7 @@
         <nav class="navbar navbar-default">
             <div class="container">
                 <div class="col-xs-5 col-sm-2 col-md-2 col-lg-2">
-                    <div class="logo">
-                        <a href="/" class="navbar-brand">
-                            <span class="sh">Ш</span><span class="plus">++</span>
-                        </a>
-                    </div>
+                    <div class="logo"><a href="http://nazarzo.site/" class="navbar-brand"><span class="sh">Ш</span><span class="plus">++</span></a></div>
                 </div>
                 <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
                     <div class="main-menu">
@@ -77,15 +81,20 @@
                                 <div class="form-group">
                                     <input id="search" type="text" placeholder="Найти книгу" class="form-control">
                                     <script>
-                                        $("#search").bind("keypress", function (e) {
-                                            if (e.keyCode == 13) {
-                                                e.preventDefault();
-                                                var searchText = $("#search").val().trim();
+                                      $("#search").bind("keypress", function (e) {
+                                          if (e.keyCode == 13) {
+                                              e.preventDefault();
+
+                                              var searchText = $("#search").val().trim();
+
                                                 // Update the URL with the new search query
                                                 window.location.search = searchText ? '?search=' + encodeURIComponent(searchText) : '';
+                                                
+
                                             }
-                                        });
+                                      })
                                     </script>
+
                                     <div class="loader"><img src="/static/books-page/books-page_files/loading.gif"></div>
                                     <div id="list" size="" class="bAutoComplete mSearchAutoComplete"></div>
                                 </div>
@@ -94,10 +103,7 @@
                     </div>
                 </div>
                 <div class="col-xs-2 col-sm-3 col-md-2 col-lg-2 hidden-xs">
-                    <div class="social">
-                        <a href="https://www.facebook.com/shpp.kr/" target="_blank"><span class="fa-stack fa-sm"><i class="fa fa-facebook fa-stack-1x"></i></span></a>
-                        <a href="http://programming.kr.ua/ru/courses#faq" target="_blank"><span class="fa-stack fa-sm"><i class="fa fa-book fa-stack-1x"></i></span></a>
-                    </div>
+                    <div class="social"><a href="https://www.facebook.com/shpp.kr/" target="_blank"><span class="fa-stack fa-sm"><i class="fa fa-facebook fa-stack-1x"></i></span></a><a href="http://programming.kr.ua/ru/courses#faq" target="_blank"><span class="fa-stack fa-sm"><i class="fa fa-book fa-stack-1x"></i></span></a></div>
                 </div>
             </div>
         </nav>
@@ -105,9 +111,12 @@
     <section class="sidebar2">
         <div class="nav2">
             <div class="filterBlock">
-                <a class="sidebar_item_my" href="?page=<%= page %>&offset=20<%= searchText ? '&search=' + encodeURIComponent(searchText) : '' %>&filter=new" data-filter='new'>Нові</a>
+                <a class="sidebar_item_my" href="?page=<%= page %>&offset=20<%= searchText ? '&search=' + encodeURIComponent(searchText) : ''%>&filter=new" data-filter='new'>Нові</a>
+    
                 <a class="sidebar_item_my" href="?page=<%= page %>&offset=20<%= searchText ? '&search=' + encodeURIComponent(searchText) : '' %>&filter=popular" data-filter='popular'>Популярні</a>
-                <a class="sidebar_item_my" href="?page=<%= page %>&offset=20<%= searchText ? '&search=' + encodeURIComponent(searchText) : '' %>&filter=all" data-filter='all'>Всі</a>
+    
+                <a class="sidebar_item-my" href="?page=<%= page %>&offset=20<%= searchText ? '&search=' + encodeURIComponent(searchText) : '' %>&filter=all" data-filter='all'>Всі</a>
+    
             </div>
         </div>
     </section>
@@ -119,7 +128,8 @@
                         <div data-book-id="<%= book.book_id %>" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
                             <div class="book">
                                 <a href="/book/?bookID=<%=book.book_id%>">
-                                    <img src="/book/cover/<%= book.book_id %>" alt="<%= book.book_name %>">
+                                    <!-- Update the src attribute to fetch the image dynamically -->
+                                    <img src="book/cover/<%= book.book_id %>" alt="<%= book.book_name %>">
                                     <div data-title="<%= book.book_name %>" class="blockI" style="height: 46px;">
                                         <div data-book-title="<%= book.book_name %>" class="title size_text"><%= book.book_name %></div>
                                         <div data-book-author="<%= book.authors.length ? book.authors.join(', ') : 'Unknown Author' %>" class="author">
@@ -145,18 +155,27 @@
                     <a href="?page=<%= page + 1 %>&offset=20<%= searchText ? '&search=' + encodeURIComponent(searchText) : '' %>&filter=<%=filter%>" class="btn btn-pagination">Next</a>
                 <% } %>
                 <a href="/login" class="btn btn-signin">Sign in</a>
+                
             </div>
+            
+            
         </div>
     </section>
+
+    
+
+    
+
     <section id="footer" class="footer-wrapper">
         <div class="navbar-bottom row-fluid">
             <div class="navbar-inner">
                 <div class="container-fluid">
-                    <div class="content_footer">Made with <a href="http://programming.kr.ua/" class="heart"><i aria-hidden="true" class="fa fa-heart"></i></a> by HolaTeam</div>
+                    <div class="content_footer"> Made with<a href="http://programming.kr.ua/" class="heart"><i aria-hidden="true" class="fa fa-heart"></i></a>by HolaTeam</div>
                 </div>
             </div>
         </div>
     </section>
+
     <div class="sweet-overlay" tabindex="-1" style="opacity: -0.02; display: none;"></div>
     <div class="sweet-alert hideSweetAlert" data-custom-class="" data-has-cancel-button="false" data-has-confirm-button="true" data-allow-outside-click="false" data-has-done-function="false" data-animation="pop" data-timer="null" style="display: none; margin-top: -169px; opacity: -0.03;">
         <div class="sa-icon sa-error" style="display: block;">
@@ -165,6 +184,7 @@
                 <span class="sa-line sa-right"></span>
             </span>
         </div>
+       
     </div>
 </body>
 

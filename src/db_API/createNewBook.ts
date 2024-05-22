@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { connection } from './connect';
+import { connection as connectionPromise } from './connect';
 import path from 'path';
 
 const scriptPath =  path.join( 'sqlscripts/operation', 'create_new_book.sql');
@@ -13,6 +13,12 @@ export async function createNewBook(
     imageUrl : string 
         ): Promise<void> {
   try {
+
+    const connection = await connectionPromise;
+        if (!connection){
+            throw new Error('Connection is not established')
+          }
+
     // Read the content of the SQL file
     let sqlScript = fs.readFileSync(scriptPath, 'utf-8');
             

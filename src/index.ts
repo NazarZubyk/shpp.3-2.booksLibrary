@@ -22,7 +22,7 @@ const cron = require('node-cron');
 //clearDB();
 //   console.log('*********************************************************************')
   
-  //runUpdates();
+runUpdates();
 //migrateDBfrotmV0toV1()
 //migrateDBfrotmV1toV0()
 //loadBackup('/home/nazar/jsFromGit/3.2/3.2/source/dump/backup_1705010400053.sql')
@@ -30,7 +30,7 @@ const cron = require('node-cron');
 
 
 const app = express()
-const port = 3005;
+const port = 3000;
 
 app.use(session({
   secret: 'mySupeSecretKey2389fncnddjc8eycsdcijsm', 
