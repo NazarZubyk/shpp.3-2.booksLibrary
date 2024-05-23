@@ -4,14 +4,16 @@ services:
     image: mysql:8.0
     container_name: mysql_container
     environment:
-      MYSQL_ROOT_PASSWORD: 88888888
+      MYSQL_ROOT_PASSWORD: 111111112
       MYSQL_DATABASE: myDB
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 111111112
     volumes:
       - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - mynetwork
-    # Memory allocation for MySQL (200 MB)
-    mem_limit: 200m
+    mem_limit: 400m  # Memory allocation for MySQL (200 MB)
 
   app:
     build: .
@@ -19,7 +21,7 @@ services:
     environment:
       DB_HOST: db
       DB_USER: root
-      DB_PASSWORD: 88888888
+      DB_PASSWORD: 111111112
       DB_NAME: myDB
     ports:
       - "3000:3000"
@@ -27,8 +29,7 @@ services:
       - db
     networks:
       - mynetwork
-    # Memory allocation for Node Server (100 MB)
-    mem_limit: 100m
+    mem_limit: 150m  # Memory allocation for Node Server (100 MB)
 
   nginx:
     image: nginx:latest
@@ -38,29 +39,15 @@ services:
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./certs:/etc/nginx/certs
+      - /etc/letsencrypt:/etc/nginx/certs  # Mount the host system's certificate directory
     depends_on:
       - app
     networks:
       - mynetwork
-    # Memory allocation for Nginx Proxy (20 MB)
-    mem_limit: 20m
-
-  certbot:
-    image: certbot/certbot
-    container_name: certbot_container
-    volumes:
-      - ./certs:/etc/letsencrypt
-    depends_on:
-      - nginx
-    networks:
-      - mynetwork
-    # Memory allocation for Certbot (100 MB)
-    mem_limit: 100m
+    mem_limit: 41m  # Memory allocation for Nginx Proxy (20 MB)
 
 networks:
   mynetwork:
 
 volumes:
   db_data:
-

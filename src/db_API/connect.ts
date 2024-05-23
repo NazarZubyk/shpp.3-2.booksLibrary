@@ -9,7 +9,7 @@ interface DbConfig {
 
 const connectWithRetry = async (config: DbConfig, retries = 5, delay = 5000): Promise<mysql.Connection> => {
   let attempt = 0;
-
+  console.log(config)
   while (attempt < retries) {
     try {
       const connection = await mysql.createConnection(config);
