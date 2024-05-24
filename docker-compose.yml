@@ -1,13 +1,15 @@
 version: '3.8'
 services:
   db:
-    image: mysql:8.0
+    image: mysql:8.0.37
     container_name: mysql_container
     environment:
       MYSQL_ROOT_PASSWORD: 111111112
       MYSQL_DATABASE: myDB
-      MYSQL_USER: root
+      MYSQL_USER: user1
       MYSQL_PASSWORD: 111111112
+    ports:
+      - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -20,7 +22,7 @@ services:
     container_name: node_app_container
     environment:
       DB_HOST: db
-      DB_USER: root
+      DB_USER: user1
       DB_PASSWORD: 111111112
       DB_NAME: myDB
     ports:
@@ -50,4 +52,3 @@ networks:
   mynetwork:
 
 volumes:
-  db_data:
