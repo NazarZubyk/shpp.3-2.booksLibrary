@@ -33,6 +33,8 @@ try {
             body('username').notEmpty(),
             body('password').notEmpty()
         ],postRegister)
+
+
     router.route('/admin')
         .get(getAdmin)
         .post(
@@ -44,8 +46,12 @@ try {
         ],
         upload.single('coverImage'),
         postAdmin)
+
+
     router.route('/books')
         .get(getAdminBooks)
+
+        
     router.route('/books/:bookId')
         .delete([
             param('bookId').notEmpty().isNumeric().isInt()
@@ -70,6 +76,8 @@ try {
             query('page').optional().notEmpty().isNumeric(),
             
         ],getMainPage)
+
+        
     router.route('/book/cover/:bookId')
         .get([
             param('bookId').notEmpty().isNumeric().isInt()

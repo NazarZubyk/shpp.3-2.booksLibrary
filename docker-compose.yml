@@ -8,6 +8,7 @@ services:
       MYSQL_DATABASE: myDB
       MYSQL_USER: user1
       MYSQL_PASSWORD: 111111112
+      
     ports:
       - "3307:3306"
     volumes:
@@ -25,6 +26,10 @@ services:
       DB_USER: user1
       DB_PASSWORD: 111111112
       DB_NAME: myDB
+      AWS_S3_REGION: "examples"
+      AWS_ACCESS_KEY_ID: "examples"
+      AWS_SECRET_ACCESS_KEY: "examples"
+      BUCKET_NAME: "examples"
     ports:
       - "3000:3000"
     depends_on:

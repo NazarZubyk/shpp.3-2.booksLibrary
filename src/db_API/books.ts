@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import path from 'path';
 import { connection } from './connect';
 import { create } from 'domain';
+import { ImagesService } from '../model/aws';
 
 
 const getBooksTableScryptPath =  path.join( 'sqlscripts/operation', 'get_id_title_year_books_clicks.sql');
@@ -29,12 +30,16 @@ const getBookForMainWithoutSearchNew = path.join( 'sqlscripts/operation', 'get_i
 export async function  deletBookCoverImage(bookID:number) {
     const result = await getImaheUrlByBookID(bookID) as any;
     const url: { image_url: string }= result[0];
-    const deletedPath = path.join(__dirname,'..','..',url.image_url)
     
-    fs.unlink(deletedPath,(err)=>{
-        if(err) return console.log(err);
-        console.log(`${url.image_url} - file deleted successfully`)
-    });
+    // const deletedPath = path.join(__dirname,'..','..',url.image_url)
+    
+    // fs.unlink(deletedPath,(err)=>{
+    //     if(err) return console.log(err);
+    //     console.log(`${url.image_url} - file deleted successfully`)
+    // });
+
+    const aws = new ImagesService;
+    await aws.remove(url.image_url)
     
     
     

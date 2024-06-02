@@ -9,6 +9,7 @@ import { getLastCreatedFilePath } from './myFileSys';
 import { addBookInDeletedList, getBooksDate, isBookDeleted } from '../db_API/books';
 import { bookAdmin } from './types';
 import { getAuthorsByBookId } from '../db_API/authors';
+import { ImagesService } from './aws';
 
 const fs = require('fs').promises;
 const sourcePath = path.join(__dirname, '..', '..','source', 'images','bookCovers')
@@ -66,15 +67,24 @@ export async function postAdmin (req: Request, res: Response){
             const extention = image.mimetype.split('/')[1]
             const sanitizedBookTitle = date.bookTitle.replace(/\s+/g, '_');
     
+            //will be use fro aws key
             const newName = `${sanitizedBookTitle}${Date.now()}.${extention}`;
     
-            const destinationPath = path.join(sourcePath, newName);
-            const relativeImagePath = path.join('source', 'images','bookCovers',newName)
+
+            // local storage
+            //const destinationPath = path.join(sourcePath, newName);
+            //const relativeImagePath = path.join('source', 'images','bookCovers',newName)
+            //await fs.writeFile(destinationPath, image.buffer) 
+
+            //need to adds aws stroage here
+
+            const aws = new ImagesService;
+            await aws.create( image , newName );
+
+                
             
-            await fs.writeFile(destinationPath, image.buffer)     
-            
-                   
-            addBook(sanitizedBookTitle,date.publicationYear,date.description,relativeImagePath,date.authors)
+            //at now in relative path to file will be contains aws key       
+            addBook(sanitizedBookTitle,date.publicationYear,date.description, newName ,date.authors)
     
             res.send(JSON.stringify({ success: true }))
                 

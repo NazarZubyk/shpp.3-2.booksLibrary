@@ -6,6 +6,7 @@ import { getAuthorsByBookId } from '../db_API/authors';
 import { validationResult } from 'express-validator';
 import ejs from 'ejs';
 import { off } from 'process';
+import { ImagesService } from './aws';
 
 const frontPath = path.join(__dirname, '..', '..','front','books-page')
 const dirPath = path.join(__dirname, '..', '..')
@@ -68,16 +69,23 @@ export async function getBookCover(req:Request,res:Response) {
         } 
 
     const params:{bookId: number} = req.params as any
-        
+        /// return image need here
     try {
         const result = await getImaheUrlByBookID(params.bookId) as any;
         const url: { image_url: string }= result[0];
         
-    
-        const urlOfImage = path.join(dirPath, url.image_url);
-    
+        //version with local storage
+        //const urlOfImage = path.join(dirPath, url.image_url);
         
-        res.sendFile(urlOfImage);
+        const aws =  new ImagesService;
+        const date = await aws.getImage(url.image_url)
+        
+        if(date){
+            res.send(date);
+        }
+        else{
+            res.status(404).json({ error: 'Image not found' });
+        }
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });

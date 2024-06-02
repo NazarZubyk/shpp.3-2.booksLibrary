@@ -1,3 +1,6 @@
+### Updated `README.md`
+
+```markdown
 # NodeServer - Books Library
 
 This project is a Node.js server for a book library application, running in Docker containers with Nginx, MySQL, and Certbot for SSL certification.
@@ -31,7 +34,7 @@ sudo certbot certonly --webroot --webroot-path=/var/www/certbot --email your-ema
 Edit `nginx.conf`:
 
 - Update paths for SSL certificates if necessary.
-- Replace `nazarzo.site` with your actual domain.
+- Replace `yourdomain.com` with your actual domain.
 
 ```nginx
 user nginx;
@@ -78,7 +81,83 @@ http {
 }
 ```
 
-### 4. Build and Run the Docker Containers
+### 4. Configure Environment Variables
+
+Update the environment variables in the `docker-compose.yml` file:
+
+```yaml
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0.37
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: 111111112
+      MYSQL_DATABASE: myDB
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: 111111112
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mynetwork
+    mem_limit: 400m  # Memory allocation for MySQL (400 MB)
+
+  app:
+    build: .
+    container_name: node_app_container
+    environment:
+      DB_HOST: db
+      DB_USER: user1
+      DB_PASSWORD: 111111112
+      DB_NAME: myDB
+      AWS_S3_REGION: "your-aws-region"
+      AWS_ACCESS_KEY_ID: "your-aws-access-key-id"
+      AWS_SECRET_ACCESS_KEY: "your-aws-secret-access-key"
+      BUCKET_NAME: "your-bucket-name"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+    mem_limit: 150m  # Memory allocation for Node Server (150 MB)
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_container
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/www/certbot:/var/www/certbot
+    depends_on:
+      - app
+    networks:
+      - mynetwork
+    mem_limit: 41m  # Memory allocation for Nginx Proxy (41 MB)
+
+networks:
+  mynetwork:
+
+volumes:
+  db_data:
+```
+
+**Environment Variables Explained:**
+
+- **AWS_S3_REGION**: The AWS region where your S3 bucket is located (e.g., `us-east-1`).
+- **AWS_ACCESS_KEY_ID**: Your AWS access key ID.
+- **AWS_SECRET_ACCESS_KEY**: Your AWS secret access key.
+- **BUCKET_NAME**: The name of your S3 bucket.
+
+Make sure to replace `your-aws-region`, `your-aws-access-key-id`, `your-aws-secret-access-key`, and `your-bucket-name` with your actual AWS credentials and bucket name.
+
+### 5. Build and Run the Docker Containers
 
 From the main folder of the project, build and start the containers:
 
@@ -87,7 +166,15 @@ docker-compose build
 docker-compose up -d
 ```
 
-### 5. Access the Application
+### 6. Access the Application
 
 If everything is set up correctly, your server should be running on your domain.
+
+**Note:** Ensure that the ports 80 and 443 are open and accessible for the server to respond to HTTP and HTTPS requests.
+
+### Additional Notes
+
+- **Memory Limits**: The memory limits set in the `docker-compose.yml` file (`mem_limit`) ensure that each service does not exceed the specified memory usage. Adjust these values as needed based on your server's capacity and application requirements.
+- **SSL Certificates**: The Certbot certificates are stored in `/etc/letsencrypt`. Ensure that this path is correctly referenced in your `nginx.conf` file.
+- **Database Initialization**: The `init.sql` script is executed when the MySQL container is first created. Make sure this script is correctly placed and contains the necessary SQL commands to initialize your database.
 

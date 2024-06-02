@@ -63,7 +63,7 @@ http.createServer(app).listen(port,()=>{
 
 cron.schedule('0 0 * * *', () => {
   updateDB();
-  createBackup();
+  //createBackup();
 });
 
 
