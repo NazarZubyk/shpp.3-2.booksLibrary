@@ -49,6 +49,9 @@ declare module 'express-session' {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// if you wnat use .env file uncomment this line
+//require('dotenv').config();
+
 app.set('views', path.join('front', 'books-page')); 
 app.set('view engine', 'ejs'); 
 

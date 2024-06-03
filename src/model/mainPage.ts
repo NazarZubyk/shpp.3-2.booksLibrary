@@ -37,7 +37,7 @@ export async function getMainPage(req:Request,res:Response) {
         searchText = `%${searchText}%`
         dateReturned = await getIdAndTitleOfBooksSearch(offset,from,searchText,filter)
     }
-    console.log(dateReturned)
+    
         let books : bookMain[] = dateReturned[0] as any
         
         // let booksWithoutDeleted:Partial<bookMain[]>={} as bookMain[]; 
@@ -78,17 +78,29 @@ export async function getBookCover(req:Request,res:Response) {
         //const urlOfImage = path.join(dirPath, url.image_url);
         
         const aws =  new ImagesService;
-        const date = await aws.getImage(url.image_url)
+        const imageData = await aws.getImage(url.image_url)
         
-        if(date){
-            res.send(date);
-        }
-        else{
+        if (imageData && imageData.data.Body) {
+            // Set content type header
+            res.setHeader('Content-Type', imageData.contentType);
+
+            // Convert the stream to Buffer and send it as a binary response
+            const chunks: Uint8Array[] = [];
+            for await (const chunk of imageData.data.Body as AsyncIterable<Uint8Array>) {
+                chunks.push(chunk);
+            }
+            const buffer = Buffer.concat(chunks);
+
+            res.send(buffer);
+        } else {
             res.status(404).json({ error: 'Image not found' });
         }
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
-      }
-    
+      }     
+
+      
+      
+
 }

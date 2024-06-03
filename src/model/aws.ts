@@ -52,7 +52,7 @@ import {
         }
     }
     
-    async getImage (key: string): Promise<string|undefined>{
+    async getImage (key: string){
       
       
      try {
@@ -63,16 +63,34 @@ import {
          }),
        );
        
+      if (dataFromAws.Body) {
+        // Extract necessary data and return it
+        const contentType = "image/" + await this.getFileExtension(key);
+        return { data: dataFromAws, contentType };
+      } else {
+          console.error('Body from AWS response is undefined.');
+          return undefined;
+      }
        
-         const data = await dataFromAws.Body?.transformToString('base64');
-       
-         return data;
-       
-     } catch (error) {
-      console.error('Error get object from S3:', error);
-     }
+      } catch (error) {
+        console.error('Error get object from S3:', error);
+      }
   
     }
+
+     async getFileExtension(filename:string) {
+      // Split the filename by dot (.)
+      const parts = filename.split('.');
+      // Get the last part (which should be the extension)
+      const extension = parts[parts.length - 1];
+      // Return the extension in lowercase
+      return extension.toLowerCase();
+  }
+
+
+    
+
+    
 
     async remove(key: string): Promise<boolean> {
       try {
@@ -94,6 +112,8 @@ import {
         return false;
       }
     }
+
+    
     
   }
   
